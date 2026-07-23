@@ -1,6 +1,6 @@
-pipelina{
+pipeline{
     agent any
-    tools {nodejas "nodejs"}
+    tools {nodejs "nodejs"}
 
     stages{
 
