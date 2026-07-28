@@ -26,9 +26,7 @@ pipeline{
                 bat 'git clone https://github.com/sennadanii/hub-de-leitura-teste-ui2.git' 
             }
         }
-git add jenkinsfile
-git commit -m "corrige jenkinsfile"
-git push
+
         stage("instalar dependencias do projeto de teste"){
             steps {
                 dir('hub-de-leitura-teste-ui2') {
