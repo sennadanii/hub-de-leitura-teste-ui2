@@ -19,6 +19,7 @@ pipeline{
                 bat '''
                     call npm install
                     start /B npm start
+                    npx cypress install
                 '''
     
                }
@@ -38,6 +39,7 @@ pipeline{
             steps {
                 dir('hub-de-leitura-teste-ui2') {
                     bat 'call npm install'
+                    bat 'npx cypress install'
                 }
             }
         }
