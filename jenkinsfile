@@ -17,11 +17,39 @@ pipeline{
             steps{
                dir('hub-de-leitura-integrado2') {
                 bat 'npm install'
-                bat 'npm start'
+                bat 'nohup npm start &'
                }
-                
 
             }
+            
+        stage("clonar o projeto de teste"){
+            steps{
+                bat 'rm -rf hub-de-leitura-teste-ui2|| true
+                bat 'git clone https://github.com/sennadanii/hub-de-leitura-teste-ui2.git' 
+
+
+            }
+        }
+    }
+
+         stage("instalar dependencias do projeto de teste"){
+            steps {
+                dir('hub-de-leitura-teste-ui2') {
+                bat 'npm install'
+
+            }
+        }
+    }
+
+             stage("executar os testes automatizados"){
+            steps {
+                dir('hub-de-leitura-teste-ui2')
+                bat 'npm test'
+        }
+    }
+    post {
+        always{
+            bat 'pkill -f "node"|| true'
         }
     }
 
