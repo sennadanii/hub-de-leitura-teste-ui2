@@ -6,31 +6,38 @@ pipeline{
 
         stage("clonar o hub de leitura integrado"){
             steps{
-                sh 'rm -rf hub-de-leitura-integrado2 ||true'
-                sh 'git clone https://github.com/EBAC-QE/hub-de-leitura-integrado2.git' 
+                bat '''
+                    if exist hub-de-leitura-integrado2 rmdir /s /q hub-de-leitura-integrado2
+                    git clone https://github.com/EBAC-QE/hub-de-leitura-integrado2.git
+                '''
             }
         }
 
         stage("Instalar dependencias do projeto"){
             steps{
                dir('hub-de-leitura-integrado2') {
-                sh 'npm install'
-                sh 'start /B npm start'
+                bat '''
+                    call npm install
+                    start /B npm start
+                '''
+    
                }
             }
         }
 
         stage("clonar o projeto de teste"){
             steps{
-                sh 'rm -rf hub-de-leitura-teste-ui2|| true'
-                sh 'git clone https://github.com/sennadanii/hub-de-leitura-teste-ui2.git' 
+                bat '''
+                if exist hub-de-leitura-integrado2 rmdir /s /q hub-de-leitura-teste-ui2
+                git clone https://github.com/sennadanii/hub-de-leitura-teste-ui2.git
+                '''
             }
         }
 
         stage("instalar dependencias do projeto de teste"){
             steps {
                 dir('hub-de-leitura-teste-ui2') {
-                    sh 'npm install'
+                    bat 'npm install'
                 }
             }
         }
@@ -46,7 +53,7 @@ pipeline{
 
     post {
         always{
-            sh 'pkell -f "node" || true'
+            bat 'taskkill /F /IM node.exe /T || exit 0'
         }
     }
 }
