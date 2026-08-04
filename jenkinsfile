@@ -42,7 +42,8 @@ pipeline{
             steps {
                 dir('hub-de-leitura-teste-ui2') {
                     bat 'call npm install'
-                    bat 'npx cypress install --force'
+                    bat 'set DEBUG=cypress:cli* && npx cypress install --force'
+                    bat 'if exist "%CYPRESS_CACHE_FOLDER%\\15.10.0\\Cypress\\Cypress.exe" (echo BINARIO OK) else (echo BINARIO AUSENTE APOS INSTALL)'
                     bat 'npx cypress verify'
                 }
             }
