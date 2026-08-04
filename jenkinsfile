@@ -4,38 +4,45 @@ pipeline{
 
     environment {
         CYPRESS_CACHE_FOLDER = "${WORKSPACE}\\cypress_cache"
+        CI = 'true'
     }
 
     stages{
 
         stage("clonar o hub de leitura integrado"){
             steps{
-                bat 'rmdir /s /q hub-de-leitura-integrado2 || exit 0'
-                bat 'git clone --depth 1 https://github.com/EBAC-QE/hub-de-leitura-integrado2.git'
+                bat '''
+                    if exist hub-de-leitura-integrado2 rmdir /s /q hub-de-leitura-integrado2
+                    git clone https://github.com/EBAC-QE/hub-de-leitura-integrado2.git
+                '''
             }
         }
 
         stage("Instalar dependencias do projeto"){
             steps{
                dir('hub-de-leitura-integrado2') {
-                bat 'npm install'
-                bat 'start /B npm start'
+                bat '''
+                    call npm install
+                    start /B npm start
+                '''
                }
             }
         }
 
         stage("clonar o projeto de teste"){
             steps{
-                bat 'rmdir /s /q hub-de-leitura-teste-ui2 || exit 0'
-                bat 'git clone --depth 1 https://github.com/sennadanii/hub-de-leitura-teste-ui2.git'
+                bat '''
+                if exist hub-de-leitura-teste-ui2 rmdir /s /q hub-de-leitura-teste-ui2
+                git clone https://github.com/sennadanii/hub-de-leitura-teste-ui2.git
+                '''
             }
         }
 
         stage("instalar dependencias do projeto de teste"){
             steps {
                 dir('hub-de-leitura-teste-ui2') {
-                    bat 'npm install'
-                    bat 'npx cypress install'
+                    bat 'call npm install'
+                    bat 'npx cypress install --force'
                     bat 'npx cypress verify'
                 }
             }
@@ -44,7 +51,7 @@ pipeline{
         stage("executar os testes automatizados"){
             steps {
                 dir('hub-de-leitura-teste-ui2'){
-                    bat 'npm test'
+                    bat 'call npm test'
                 }
             }
         }
@@ -55,7 +62,7 @@ pipeline{
             dir ('hub-de-leitura-teste-ui2') {
                 archiveArtifacts artifacts: 'cypress/screenshots/**/*.*, cypress/videos/**/*.*', allowEmptyArchive: true
             }
-            bat 'taskkill /F /IM node.exe || exit 0'
+            bat 'taskkill /F /IM node.exe /T || exit 0'
         }
     }
 }
