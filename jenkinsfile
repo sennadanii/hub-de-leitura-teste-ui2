@@ -2,6 +2,10 @@ pipeline{
     agent any
     tools {nodejs "nodejs"}
 
+    environment {
+        CYPRESS_CACHE_FOLDER = "${WORKSPACE}\\cypress_cache"
+    }
+
     stages{
 
         stage("clonar o hub de leitura integrado"){
@@ -32,6 +36,7 @@ pipeline{
                 dir('hub-de-leitura-teste-ui2') {
                     bat 'npm install'
                     bat 'npx cypress install'
+                    bat 'npx cypress verify'
                 }
             }
         }
