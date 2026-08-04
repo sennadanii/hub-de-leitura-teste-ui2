@@ -6,31 +6,31 @@ pipeline{
 
         stage("clonar o hub de leitura integrado"){
             steps{
-                sh 'rm -rf hub-de-leitura-integrado2 ||true'
-                sh 'git clone --depth 1 https://github.com/EBAC-QE/hub-de-leitura-integrado2.git' 
+                bat 'rm -rf hub-de-leitura-integrado2 ||true'
+                bat 'git clone --depth 1 https://github.com/EBAC-QE/hub-de-leitura-integrado2.git' 
             }
         }
 
         stage("Instalar dependencias do projeto"){
             steps{
                dir('hub-de-leitura-integrado2') {
-                sh 'npm install'
-                sh 'nohup npm start > app.log 2>&1 &'
+                bat 'npm install'
+                bat 'nohup npm start > app.log 2>&1 &'
                }
             }
         }
 
         stage("clonar o projeto de teste"){
             steps{
-                sh 'rm -rf hub-de-leitura-teste-ui2|| true'
-                sh 'git clone --depth 1 https://github.com/sennadanii/hub-de-leitura-teste-ui2.git' 
+                bat 'rm -rf hub-de-leitura-teste-ui2|| true'
+                bat 'git clone --depth 1 https://github.com/sennadanii/hub-de-leitura-teste-ui2.git' 
             }
         }
 
         stage("instalar dependencias do projeto de teste"){
             steps {
                 dir('hub-de-leitura-teste-ui2') {
-                    sh 'npm install'
+                    bat 'npm install'
                 }
             }
         }
@@ -38,7 +38,7 @@ pipeline{
         stage("executar os testes automatizados"){
             steps {
                 dir('hub-de-leitura-teste-ui2'){
-                    sh 'npm test'
+                    bat 'npm test'
                 }
             }
         }
