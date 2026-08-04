@@ -15,7 +15,7 @@ pipeline{
             steps{
                dir('hub-de-leitura-integrado2') {
                 sh 'npm install'
-                sh 'start /B npm start'
+                sh 'nohup npm start > app.log 2>&1 &'
                }
             }
         }
