@@ -38,7 +38,7 @@ pipeline{
         stage("executar os testes automatizados"){
             steps {
                 dir('hub-de-leitura-teste-ui2'){
-                    bat 'npm test'
+                    sh 'npm test'
                 }
             }
         }
@@ -47,10 +47,10 @@ pipeline{
     post {
         always{
             dir ('hub-de-leitura-teste-ui2') {
-                archiveArtifacts artifacts: 'cypress/screenshots/**/*.*, cypress\videos/**/*.*',allowEmptyArchive: true
+                archiveArtifacts artifacts: 'cypress/screenshots/**/*.*, cypress/videos/**/*.*',allowEmptyArchive: true
             }
             
-            sh 'pkell -f "node" || true'
+            sh 'pkill -f "node" || true'
         }
     }
 }
