@@ -41,10 +41,11 @@ pipeline{
         stage("instalar dependencias do projeto de teste"){
             steps {
                 dir('hub-de-leitura-teste-ui2') {
-                    bat 'call npm install'
-                    bat 'set DEBUG=cypress:cli* && npx cypress install --force'
-                    bat 'if exist "%CYPRESS_CACHE_FOLDER%\\15.10.0\\Cypress\\Cypress.exe" (echo BINARIO OK) else (echo BINARIO AUSENTE APOS INSTALL)'
-                    bat 'npx cypress verify'
+                    bat '''
+                        call npm install
+                        npx cypress install
+                        npx cypress verify
+                    '''
                 }
             }
         }
