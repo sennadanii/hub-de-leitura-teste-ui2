@@ -2,10 +2,10 @@ pipeline{
     agent any
     tools {nodejs "nodejs"}
 
-    environment {
-        CYPRESS_CACHE_FOLDER = "${WORKSPACE}\\cypress_cache"
-        CI = 'true'
-    }
+   environment {
+    CYPRESS_CACHE_FOLDER = "C:\\cy_cache"
+    CI = 'true'
+}
 
     stages{
 
